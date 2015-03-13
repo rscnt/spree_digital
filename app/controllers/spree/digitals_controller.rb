@@ -1,6 +1,6 @@
 module Spree
   class DigitalsController < Spree::StoreController
-    ssl_required :show
+    #ssl_required :show
     rescue_from ActiveRecord::RecordNotFound, with: :resource_not_found
 
     def show
