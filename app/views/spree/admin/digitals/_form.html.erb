@@ -1,30 +1,40 @@
+<hr />
 <div>
-  <%= form_for(:digital, :url => admin_product_digitals_path(@product), :method => :create, :multipart => true ) do |f| %>
-    <fieldset>
-      <legend><%= Spree::Variant.model_name.human %> "<%= variant.is_master ? "Master" : variant.options_text %>"</legend>
-      <strong><%= Spree.t(:files, scope: 'digitals') %>:</strong>
-      <% if variant.digital? %>
-        <ul>
-          <% variant.digitals.each do |digital| %>
-            <li>
-              <%= render digital %>&nbsp;&nbsp;
-              <%= link_to Spree.t(:delete_file, scope: 'digitals'), admin_product_digital_url(@product, digital), data: {confirm: Spree.t(:delete_file_confirmation, scope: 'digitals', filename: digital.attachment_file_name)}, method: :delete %>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <%= Spree.t(:none) %>
-      <% end %>
-      <p class="form-buttons">
-        <%= f.field_container :file do %>
-          <%= f.label :file, Spree.t(:new_file, scope: 'digitals') %> <span class="required">*</span><br/>
-          <%= f.file_field :attachment %>
-        <% end %>
+    <%= form_for(:digital, :url => admin_product_digitals_path(@product), :method => :create, :multipart => true ) do |f| %>
+        <div class="form-group">
+            <p class="lead"><span class="label label-inverse"><%= Spree::Variant.model_name.human %> </span><span class="label label-default"><%= variant.is_master ? "Master" : variant.options_text %></span></p>
+            <strong><%= Spree.t(:files, scope: 'digitals') %>:</strong>
+            <% if variant.digital? %>
+                <table class="table table table-hover">
+                    <% variant.digitals.each do |digital| %>
+                        <tr>
+                            <td>
+                                <%= render digital %>
+                            </td>
+                            <td>
+                                <%= link_to "",
+                                    admin_product_digital_url(@product, digital),
+                                    data:{confirm: Spree.t(:delete_file_confirmation, scope: 'digitals', filename: digital.attachment_file_name)}, method: :delete, class: "btn btn-danger btn-sm icon icon-delete" %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+            <% else %>
+                <%= Spree.t(:none) %>
+            <% end %>
+            <p class="form-buttons">
+                <%= f.field_container :file do %>
+                    <div class="field-container">
+                        <%= f.label :file, Spree.t(:new_file, scope: 'digitals') %> <span class="required">*</span><br/>
+                        <%= f.file_field :attachment %>
+                        <p class="help-block"> Upload a new file for the variant: <%= variant.name %> </p>
+                    </div>
+                <% end %>
 
-        <%= hidden_field_tag 'digital[variant_id]', variant.id %>
+                <%= hidden_field_tag 'digital[variant_id]', variant.id %>
 
-        <%= button Spree.t(:upload, scope: "spree_digital") %>
-      </p>
-    </fieldset>
-  <% end %>
+                <%= button Spree.t(:upload, scope: "spree_digital") %>
+            </p>
+        </div>
+    <% end %>
 </div>

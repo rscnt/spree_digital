@@ -3,17 +3,26 @@
 
 <% if @product.has_variants? %>
 
-  <% for variant in @product.variants_including_master do %>
-    <%= render 'form', :variant => variant %>
-  <% end %>
+    <% for variant in @product.variants_including_master do %>
+        <%= render 'form', :variant => variant %>
+    <% end %>
 
 <% else %>
-  This product has no variants.
+    <p>
+        This product has no variants.
+    </p>
 
- <% if @product.master.digital? %>
-    A digital version of this product currently exists:
-    <%= render @product.master.digitals %>
-  <% end %>
+    <% if @product.master.digital? %>
+        <p>
+            A digital version of this product currently exists:
+        </p>
+        <ul>
+            <% @product.master.digitals.each do |digital| %>
+                <li> <%= digital.attachment_file_name %> </li>
+            <% end %>
+        </ul>
+        <%# render collection: @product.master.digitals %>
+    <% end %>
 
   <%= render 'form', :variant => @product.master %>
 
